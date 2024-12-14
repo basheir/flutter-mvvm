@@ -28,7 +28,30 @@ ThemeData getApplicationTheme (){
       elevation: AppSize.s4,
       shadowColor: ColorManager.primaryOpacity70,
       titleTextStyle: getRegularStyle(color: ColorManager.white, fontSize: FontSize.s16)
+    ),
+    buttonTheme: ButtonThemeData(
+      shape: StadiumBorder(),
+      disabledColor: ColorManager.grey1,
+      buttonColor: ColorManager.primary,
+      splashColor: ColorManager.primaryOpacity70
+    ),
+    elevatedButtonTheme: ElevatedButtonThemeData(
+      style: ElevatedButton.styleFrom(
+        textStyle: getRegularStyle(color: ColorManager.white),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppSize.s12) ),
+        backgroundColor: ColorManager.primary
+        
+      )
+    ),
+
+    // Text theme
+    textTheme: TextTheme(
+      headlineSmall: getSemiBoldStyle(color: ColorManager.darkGrey, fontSize: FontSize.s16),
+      headlineMedium: getMediumStyle(color: ColorManager.grey),
+      bodySmall: getRegularStyle(color: ColorManager.grey1),
+      bodyMedium: getRegularStyle(color: ColorManager.grey)
     )
+
   );
 
   // app bar theme
