@@ -8,18 +8,19 @@ import 'package:mvvm_project/presentation/splash/splash.dart';
 import 'package:mvvm_project/presentation/store_details/store_details.dart';
 
 class Routes {
-  static const String splashRoute = '/';
-  static const String onBoardingRoute = '/onBoarding';
-  static const String loginRoute = '/login';
-  static const String registerRoute = '/register';
-  static const String forgotPasswordRoute = '/forgotPassword';
-  static const String mainRoute = '/main';
-  static const String storeDetailsRoute = '/storeDetails';
+  static const String splashRoute = "/";
+  static const String onBoardingRoute = "/onBoarding";
+  static const String loginRoute = "/login";
+  static const String registerRoute = "/register";
+  static const String forgotPasswordRoute = "/forgotPassword";
+  static const String mainRoute = "/main";
+  static const String storeDetailsRoute = "/storeDetails";
 }
+
 
 class RouteGenerator {
   static Route<dynamic> getRoute(RouteSettings routeSettings) {
-    switch (routeSettings) {
+    switch (routeSettings.name) {
       case Routes.splashRoute:
         return MaterialPageRoute(builder: (_) => SplashView());
       case Routes.loginRoute:
