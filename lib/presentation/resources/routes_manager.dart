@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mvvm_project/presentation/forgot_password/forgot_password.dart';
 import 'package:mvvm_project/presentation/login/login.dart';
 import 'package:mvvm_project/presentation/main/main_view.dart';
+import 'package:mvvm_project/presentation/onboarding/onboarding.dart';
 import 'package:mvvm_project/presentation/register/register.dart';
 import 'package:mvvm_project/presentation/resources/strings_manager.dart';
 import 'package:mvvm_project/presentation/splash/splash.dart';
@@ -23,6 +24,8 @@ class RouteGenerator {
     switch (routeSettings.name) {
       case Routes.splashRoute:
         return MaterialPageRoute(builder: (_) => SplashView());
+      case Routes.onBoardingRoute:
+        return MaterialPageRoute(builder: (_) => OnboardingView());
       case Routes.loginRoute:
         return MaterialPageRoute(builder: (_) => LoginView());
       case Routes.registerRoute:
