@@ -43,20 +43,95 @@ class _OnboardingViewState extends State<OnboardingView> {
             statusBarIconBrightness: Brightness.dark),
       ),
       body: PageView.builder(
-        controller: _pageController,
-        itemCount: _list.length,
-        onPageChanged: (index) {
-          setState(() {
-            _currentIndex = index;
-          });
-        },
-        itemBuilder: (context, index) {
-          // return onBoardingPage
-          return OnboardingPage(_list[index]);
-        },
-        
+          controller: _pageController,
+          itemCount: _list.length,
+          onPageChanged: (index) {
+            setState(() {
+              _currentIndex = index;
+            });
+          },
+          itemBuilder: (context, index) {
+            // return onBoardingPage
+            return OnboardingPage(_list[index]);
+          }),
+      bottomSheet: Container(
+        color: ColorManager.white,
+        height: AppSize.s100,
+        child: Column(
+          children: [
+            Align(
+              alignment: Alignment.centerRight,
+              child: TextButton(
+                onPressed: () {},
+                child: Text(
+                  AppStrings.skip,
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            ),
+
+            // Add layout for indicator and arrows
+            _getButtomSheetWidget()
+          ],
+        ),
       ),
     );
+  }
+
+  Widget _getButtomSheetWidget() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        // Left arrow
+        Padding(
+          padding: EdgeInsets.all(AppPadding.p14),
+          child: GestureDetector(
+            child: SizedBox(
+              height: AppSize.s20,
+              width: AppSize.s20,
+              child: SvgPicture.asset(ImagesAsset.leftArrowIc),
+            ),
+            onTap: () {
+              // Go next slide
+            },
+          ),
+        ),
+
+        // Circles indicator
+        Row(
+          children: [
+            for (int i = 0; i < _list.length; i++)
+              Padding(
+                padding: EdgeInsets.all(AppPadding.p12),
+                child: _getProperCircle(i),
+              ),
+          ],
+        ),
+
+        // Right arrow
+        Padding(
+          padding: EdgeInsets.all(AppPadding.p14),
+          child: GestureDetector(
+            child: SizedBox(
+              height: AppSize.s20,
+              width: AppSize.s20,
+              child: SvgPicture.asset(ImagesAsset.leftArrowIc),
+            ),
+            onTap: () {
+              // Go next slide
+            },
+          ),
+        )
+      ],
+    );
+  }
+
+  Widget _getProperCircle(int index) {
+    if (index == _currentIndex) {
+      return SvgPicture.asset(ImagesAsset.hollowCirlceIc); // Selected slider
+    } else {
+      return SvgPicture.asset(ImagesAsset.solidCircleIc);
+    }
   }
 }
 
@@ -72,6 +147,7 @@ class OnboardingPage extends StatelessWidget {
         const SizedBox(
           height: AppSize.s40,
         ),
+        // Title here
         Padding(
           padding: const EdgeInsets.all(AppPadding.p8),
           child: Text(
@@ -80,6 +156,8 @@ class OnboardingPage extends StatelessWidget {
             style: Theme.of(context).textTheme.headlineSmall,
           ),
         ),
+
+        //Subtitle here
         Padding(
           padding: const EdgeInsets.all(AppPadding.p8),
           child: Text(
@@ -91,6 +169,8 @@ class OnboardingPage extends StatelessWidget {
         SizedBox(
           height: AppSize.s60,
         ),
+
+        // image here
         SvgPicture.asset(_sliderObject.image)
       ],
     );
