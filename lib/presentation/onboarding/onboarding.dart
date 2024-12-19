@@ -92,7 +92,12 @@ class _OnboardingViewState extends State<OnboardingView> {
               child: SvgPicture.asset(ImagesAsset.leftArrowIc),
             ),
             onTap: () {
-              // Go next slide
+              // Go previous slide
+              _pageController.animateToPage(_getPreviousIndex(),
+                  duration: Duration(
+                    milliseconds: DurationConstant.d300,
+                  ),
+                  curve: Curves.bounceInOut);
             },
           ),
         ),
@@ -119,11 +124,33 @@ class _OnboardingViewState extends State<OnboardingView> {
             ),
             onTap: () {
               // Go next slide
+               _pageController.animateToPage(_getPreviousIndex(),
+                  duration: Duration(
+                    milliseconds: DurationConstant.d300,
+                  ),
+                  curve: Curves.bounceInOut);
             },
           ),
         )
       ],
     );
+  }
+
+  int _getPreviousIndex() {
+    int previousIndex = _currentIndex--;
+    if (previousIndex == -1) {
+      _currentIndex =
+          _list.length - 1; // infinite loop  to the length  of the slider list
+    }
+    return _currentIndex;
+  }
+
+  int _nextPreviousIndex() {
+    int previousIndex = _currentIndex++;
+    if (previousIndex >= _list.length) {
+      _currentIndex = 0; // infinite loop  to the first inside the slider
+    }
+    return _currentIndex;
   }
 
   Widget _getProperCircle(int index) {
