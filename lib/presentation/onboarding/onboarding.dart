@@ -34,9 +34,10 @@ class _OnboardingViewState extends State<OnboardingView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: ColorManager.darkPrimary,
+      backgroundColor: ColorManager.white,
       appBar: AppBar(
-        elevation: AppSize.s1_5,
+        backgroundColor: ColorManager.white,
+        elevation: AppSize.s0,
         systemOverlayStyle: SystemUiOverlayStyle(
             statusBarColor: ColorManager.white,
             statusBarBrightness: Brightness.dark,
@@ -55,7 +56,7 @@ class _OnboardingViewState extends State<OnboardingView> {
             return OnboardingPage(_list[index]);
           }),
       bottomSheet: Container(
-        color: ColorManager.white,
+        color: ColorManager.primary,
         height: AppSize.s100,
         child: Column(
           children: [
@@ -65,7 +66,8 @@ class _OnboardingViewState extends State<OnboardingView> {
                 onPressed: () {},
                 child: Text(
                   AppStrings.skip,
-                  textAlign: TextAlign.center,
+                  style: Theme.of(context).textTheme.headlineSmall,
+                  textAlign: TextAlign.end,
                 ),
               ),
             ),
@@ -120,11 +122,11 @@ class _OnboardingViewState extends State<OnboardingView> {
             child: SizedBox(
               height: AppSize.s20,
               width: AppSize.s20,
-              child: SvgPicture.asset(ImagesAsset.leftArrowIc),
+              child: SvgPicture.asset(ImagesAsset.rightArrowIc),
             ),
             onTap: () {
               // Go next slide
-               _pageController.animateToPage(_getPreviousIndex(),
+              _pageController.animateToPage(_getPreviousIndex(),
                   duration: Duration(
                     milliseconds: DurationConstant.d300,
                   ),
@@ -146,8 +148,8 @@ class _OnboardingViewState extends State<OnboardingView> {
   }
 
   int _nextPreviousIndex() {
-    int previousIndex = _currentIndex++;
-    if (previousIndex >= _list.length) {
+    int nextIndex = _currentIndex++;
+    if (nextIndex >= _list.length) {
       _currentIndex = 0; // infinite loop  to the first inside the slider
     }
     return _currentIndex;
