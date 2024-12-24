@@ -1,5 +1,6 @@
 abstract class BaseViewModel {
   // shared properties and methods that will be used by all view models
+    
 }
 
 abstract class BaseviewmodelIput {
