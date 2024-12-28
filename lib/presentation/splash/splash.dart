@@ -20,7 +20,7 @@ Timer? _timer;
 
 
 _startDelay() {
-  _timer = Timer(Duration(seconds: 2), _goNext);
+  _timer = Timer(const Duration(seconds: 2), _goNext);
 }
 
 _goNext() {
@@ -43,7 +43,7 @@ _goNext() {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: ColorManager.primary,
-      body: Center(child: Image(image: AssetImage(ImagesAsset.splashLogo))),
+      body: const Center(child: Image(image: AssetImage(ImagesAsset.splashLogo))),
     );
   }
 }

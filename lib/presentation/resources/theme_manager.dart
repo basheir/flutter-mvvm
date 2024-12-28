@@ -30,7 +30,7 @@ ThemeData getApplicationTheme (){
       titleTextStyle: getRegularStyle(color: ColorManager.white, fontSize: FontSize.s16)
     ),
     buttonTheme: ButtonThemeData(
-      shape: StadiumBorder(),
+      shape: const StadiumBorder(),
       disabledColor: ColorManager.grey1,
       buttonColor: ColorManager.primary,
       splashColor: ColorManager.primaryOpacity70
@@ -55,7 +55,7 @@ ThemeData getApplicationTheme (){
 
   // Input decoration theme (text form field)
   inputDecorationTheme: InputDecorationTheme(
-    contentPadding: EdgeInsets.all(AppPadding.p8),
+    contentPadding: const EdgeInsets.all(AppPadding.p8),
 
     // hint style
     hintStyle: getMediumStyle(color: ColorManager.grey1),
@@ -69,25 +69,25 @@ ThemeData getApplicationTheme (){
     // enabled border
     enabledBorder: OutlineInputBorder(
       borderSide: BorderSide(color: ColorManager.grey, width: AppSize.s1_5),
-      borderRadius: BorderRadius.all(Radius.circular(AppSize.s8),),
+      borderRadius: const BorderRadius.all(Radius.circular(AppSize.s8),),
     ),
 
     // focused border
     focusedBorder: OutlineInputBorder(
       borderSide: BorderSide(color: ColorManager.primary, width: AppSize.s1_5),
-      borderRadius: BorderRadius.all(Radius.circular(AppSize.s18),),
+      borderRadius: const BorderRadius.all(Radius.circular(AppSize.s18),),
     ),
 
     // error border
     errorBorder: OutlineInputBorder(
       borderSide: BorderSide(color: ColorManager.error, width: AppSize.s1_5),
-      borderRadius: BorderRadius.all(Radius.circular(AppSize.s18),),
+      borderRadius: const BorderRadius.all(Radius.circular(AppSize.s18),),
     ),
 
     // focused error border
     focusedErrorBorder: OutlineInputBorder(
       borderSide: BorderSide(color: ColorManager.primary, width: AppSize.s1_5),
-      borderRadius: BorderRadius.all(Radius.circular(AppSize.s18),),
+      borderRadius: const BorderRadius.all(Radius.circular(AppSize.s18),),
     ),
     
   )

@@ -16,17 +16,20 @@ class OnboardingView extends StatefulWidget {
 class _OnboardingViewState extends State<OnboardingView> {
   late final List<SliderObject> _list = _getSliderData();
 
-  PageController _pageController = PageController(initialPage: 0);
+  final PageController _pageController = PageController(initialPage: 0);
 
   int _currentIndex = 0;
 
   List<SliderObject> _getSliderData() => [
         SliderObject(AppStrings.onBoardingTitle1,
             AppStrings.onBoardingSubtitle1, ImagesAsset.onboarding_Logo1),
+
         SliderObject(AppStrings.onBoardingTitle2,
             AppStrings.onBoardingSubtitle2, ImagesAsset.onboarding_Logo2),
+
         SliderObject(AppStrings.onBoardingTitle3,
             AppStrings.onBoardingSubtitle3, ImagesAsset.onboarding_Logo3),
+
         SliderObject(AppStrings.onBoardingTitle4,
             AppStrings.onBoardingSubtitle4, ImagesAsset.onboarding_Logo4),
       ];
@@ -86,7 +89,7 @@ class _OnboardingViewState extends State<OnboardingView> {
       children: [
         // Left arrow
         Padding(
-          padding: EdgeInsets.all(AppPadding.p14),
+          padding: const EdgeInsets.all(AppPadding.p14),
           child: GestureDetector(
             child: SizedBox(
               height: AppSize.s20,
@@ -95,8 +98,8 @@ class _OnboardingViewState extends State<OnboardingView> {
             ),
             onTap: () {
               // Go previous slide
-              _pageController.animateToPage(_getPreviousIndex(),
-                  duration: Duration(
+              _pageController.animateToPage(_getNextIndex(),
+                  duration: const Duration(
                     milliseconds: DurationConstant.d300,
                   ),
                   curve: Curves.bounceInOut);
@@ -109,7 +112,7 @@ class _OnboardingViewState extends State<OnboardingView> {
           children: [
             for (int i = 0; i < _list.length; i++)
               Padding(
-                padding: EdgeInsets.all(AppPadding.p12),
+                padding: const EdgeInsets.all(AppPadding.p12),
                 child: _getProperCircle(i),
               ),
           ],
@@ -117,7 +120,7 @@ class _OnboardingViewState extends State<OnboardingView> {
 
         // Right arrow
         Padding(
-          padding: EdgeInsets.all(AppPadding.p14),
+          padding: const EdgeInsets.all(AppPadding.p14),
           child: GestureDetector(
             child: SizedBox(
               height: AppSize.s20,
@@ -127,7 +130,7 @@ class _OnboardingViewState extends State<OnboardingView> {
             onTap: () {
               // Go next slide
               _pageController.animateToPage(_getPreviousIndex(),
-                  duration: Duration(
+                  duration: const Duration(
                     milliseconds: DurationConstant.d300,
                   ),
                   curve: Curves.bounceInOut);
@@ -139,18 +142,21 @@ class _OnboardingViewState extends State<OnboardingView> {
   }
 
   int _getPreviousIndex() {
-    int previousIndex = _currentIndex--;
+    int previousIndex = _currentIndex - 1;
     if (previousIndex == -1) {
-      _currentIndex =
-          _list.length - 1; // infinite loop  to the length  of the slider list
+      _currentIndex = _list.length - 1; // infinite loop to the length of the slider list
+    } else {
+      _currentIndex = previousIndex;
     }
     return _currentIndex;
   }
 
-  int _nextPreviousIndex() {
-    int nextIndex = _currentIndex++;
+  int _getNextIndex() {
+    int nextIndex = _currentIndex + 1;
     if (nextIndex >= _list.length) {
-      _currentIndex = 0; // infinite loop  to the first inside the slider
+      _currentIndex = 0; // infinite loop to the first inside the slider
+    } else {
+      _currentIndex = nextIndex;
     }
     return _currentIndex;
   }
@@ -165,7 +171,7 @@ class _OnboardingViewState extends State<OnboardingView> {
 }
 
 class OnboardingPage extends StatelessWidget {
-  SliderObject _sliderObject;
+  final SliderObject _sliderObject;
   OnboardingPage(this._sliderObject, {super.key});
 
   @override
@@ -195,7 +201,7 @@ class OnboardingPage extends StatelessWidget {
             style: Theme.of(context).textTheme.bodySmall,
           ),
         ),
-        SizedBox(
+        const SizedBox(
           height: AppSize.s60,
         ),
 
@@ -204,12 +210,4 @@ class OnboardingPage extends StatelessWidget {
       ],
     );
   }
-}
-
-class SliderObject {
-  String title;
-  String subTitle;
-  String image;
-
-  SliderObject(this.title, this.subTitle, this.image);
 }

@@ -24,7 +24,7 @@ extension HexColor on Color {
     HexColorString = HexColorString.replaceAll('#', '');
 
     if(HexColorString.length == 6) {
-      HexColorString = 'FF' + HexColorString; // 8 char with opacity 100%
+      HexColorString = 'FF$HexColorString'; // 8 char with opacity 100%
     }
     return Color(int.parse(HexColorString, radix: 16));
   }
