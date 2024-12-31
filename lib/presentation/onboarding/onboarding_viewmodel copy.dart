@@ -12,13 +12,8 @@ class OnboardingViewmodel extends BaseViewModel
   final StreamController _streamController =
       StreamController<sliderViewObject>();
 
-
   late final List<SliderObject> _list;
   int _currentIndex = 0;
-
-
-  
-  
 
   // inputs
   @override
@@ -26,12 +21,10 @@ class OnboardingViewmodel extends BaseViewModel
     _streamController.close();
   }
 
-   @override
+  @override
   void start() {
-
     _list = _getSliderData();
     _postDataToView();
-     
   }
 
   @override
@@ -40,25 +33,24 @@ class OnboardingViewmodel extends BaseViewModel
   }
 
   @override
-  int goNext() {
-       int nextIndex = _currentIndex + 1;
+  void goNext() {
+    int nextIndex = _currentIndex + 1;
     if (nextIndex >= _list.length) {
       _currentIndex = 0; // infinite loop to the first inside the slider
     } else {
       _currentIndex = nextIndex;
     }
-    return _currentIndex;
+    _postDataToView();
   }
 
   @override
   void onPageChanged(int index) {
-
     _currentIndex = index;
     _postDataToView();
   }
 
   @override
-  int onPrivious() {
+  void onPrivious() {
     int previousIndex = _currentIndex - 1;
     if (previousIndex == -1) {
       _currentIndex =
@@ -66,21 +58,17 @@ class OnboardingViewmodel extends BaseViewModel
     } else {
       _currentIndex = previousIndex;
     }
-    return _currentIndex;
+    _postDataToView();
   }
-  
+
   @override
   Sink get inputSliderViewObject => _streamController.sink;
 
-  
-
-  
-
   // Input methods
   @override
-  Stream<sliderViewObject> get outputSliderViewObject => _streamController.stream.map((sliderObject) => sliderObject);
+  Stream<SliderObject> get outputSliderViewObject =>
+      _streamController.stream.map((sliderObject) => sliderObject);
 
-  
   List<SliderObject> _getSliderData() => [
         SliderObject(AppStrings.onBoardingTitle1,
             AppStrings.onBoardingSubtitle1, ImagesAsset.onboarding_Logo1),
@@ -91,10 +79,11 @@ class OnboardingViewmodel extends BaseViewModel
         SliderObject(AppStrings.onBoardingTitle4,
             AppStrings.onBoardingSubtitle4, ImagesAsset.onboarding_Logo4),
       ];
- 
- _postDataToView(){
-   inputSliderViewObject.add(sliderViewObject(_list[_currentIndex], _list.length, _currentIndex));  
- }
+
+  _postDataToView() {
+    inputSliderViewObject.add(
+        sliderViewObject(_list[_currentIndex], _list.length, _currentIndex));
+  }
 }
 
 // This class will be used to define the input methods that will be used by the view
@@ -108,7 +97,8 @@ mixin OnboardingViewmodelInput {
 }
 // This class will be used to define the output methods that will be used by the view
 mixin OnboardingViewmodelOutput {
-  Stream<sliderViewObject> get outputSliderViewObject; // output stream for the slider view object
+  Stream<SliderObject>
+      get outputSliderViewObject; // output stream for the slider view object
 }
 
 class sliderViewObject {

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:mvvm_project/domain/model.dart';
+import 'package:mvvm_project/presentation/onboarding/onboarding_viewmodel.dart';
 import 'package:mvvm_project/presentation/resources/assets_manager.dart';
 import 'package:mvvm_project/presentation/resources/color_manager.dart';
 import 'package:mvvm_project/presentation/resources/strings_manager.dart';
@@ -7,83 +9,87 @@ import 'package:mvvm_project/presentation/resources/values_manager.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class OnboardingView extends StatefulWidget {
-  const OnboardingView({super.key});
+  final SliderObject _sliderObject;
+  const OnboardingView(this._sliderObject, {super.key});
 
   @override
   State<OnboardingView> createState() => _OnboardingViewState();
 }
 
 class _OnboardingViewState extends State<OnboardingView> {
-  late final List<SliderObject> _list = _getSliderData();
-
   final PageController _pageController = PageController(initialPage: 0);
+  OnboardingViewmodel _viewmodel = OnboardingViewmodel();
 
-  int _currentIndex = 0;
+  _bind() {
+    _viewmodel.start();
+  }
 
-  List<SliderObject> _getSliderData() => [
-        SliderObject(AppStrings.onBoardingTitle1,
-            AppStrings.onBoardingSubtitle1, ImagesAsset.onboarding_Logo1),
-
-        SliderObject(AppStrings.onBoardingTitle2,
-            AppStrings.onBoardingSubtitle2, ImagesAsset.onboarding_Logo2),
-
-        SliderObject(AppStrings.onBoardingTitle3,
-            AppStrings.onBoardingSubtitle3, ImagesAsset.onboarding_Logo3),
-
-        SliderObject(AppStrings.onBoardingTitle4,
-            AppStrings.onBoardingSubtitle4, ImagesAsset.onboarding_Logo4),
-      ];
+  @override
+  void initState() {
+    _bind();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: ColorManager.white,
-      appBar: AppBar(
-        backgroundColor: ColorManager.white,
-        elevation: AppSize.s0,
-        systemOverlayStyle: SystemUiOverlayStyle(
-            statusBarColor: ColorManager.white,
-            statusBarBrightness: Brightness.dark,
-            statusBarIconBrightness: Brightness.dark),
-      ),
-      body: PageView.builder(
-          controller: _pageController,
-          itemCount: _list.length,
-          onPageChanged: (index) {
-            setState(() {
-              _currentIndex = index;
-            });
-          },
-          itemBuilder: (context, index) {
-            // return onBoardingPage
-            return OnboardingPage(_list[index]);
-          }),
-      bottomSheet: Container(
-        color: ColorManager.primary,
-        height: AppSize.s100,
-        child: Column(
-          children: [
-            Align(
-              alignment: Alignment.centerRight,
-              child: TextButton(
-                onPressed: () {},
-                child: Text(
-                  AppStrings.skip,
-                  style: Theme.of(context).textTheme.headlineSmall,
-                  textAlign: TextAlign.end,
-                ),
-              ),
-            ),
-
-            // Add layout for indicator and arrows
-            _getButtomSheetWidget()
-          ],
-        ),
-      ),
-    );
+    return StreamBuilder<sliderViewObject>(
+        stream: _viewmodel.outputSliderViewObject,
+        builder: (context, snapshot) {
+          return _getContentWidget(snapshot.data);
+        });
   }
 
-  Widget _getButtomSheetWidget() {
+  Widget _getContentWidget(sliderViewObject? sliderViewObject) {
+    if (sliderViewObject == null) {
+      return Container();
+    } else {
+      return Scaffold(
+        backgroundColor: ColorManager.white,
+        appBar: AppBar(
+          backgroundColor: ColorManager.white,
+          elevation: AppSize.s0,
+          systemOverlayStyle: SystemUiOverlayStyle(
+              statusBarColor: ColorManager.white,
+              statusBarBrightness: Brightness.dark,
+              statusBarIconBrightness: Brightness.dark),
+        ),
+        body: PageView.builder(
+            controller: _pageController,
+            itemCount: sliderViewObject.numOfSlides,
+            onPageChanged: (index) {
+              _viewmodel.onPageChanged(index);
+            },
+            itemBuilder: (context, index) {
+              // return onBoardingPage
+              return OnboardingPage(sliderViewObject.sliderObject);
+            }),
+        bottomSheet: Container(
+          color: ColorManager.primary,
+          height: AppSize.s100,
+          child: Column(
+            children: [
+              Align(
+                alignment: Alignment.centerRight,
+                child: TextButton(
+                  onPressed: () {},
+                  child: Text(
+                    AppStrings.skip,
+                    style: Theme.of(context).textTheme.headlineSmall,
+                    textAlign: TextAlign.end,
+                  ),
+                ),
+              ),
+
+              // Add layout for indicator and arrows
+              _getButtomSheetWidget(sliderViewObject as SliderObject),
+            ],
+          ),
+        ),
+      );
+    }
+  }
+
+  Widget _getButtomSheetWidget(SliderObject sliderObject) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -98,7 +104,7 @@ class _OnboardingViewState extends State<OnboardingView> {
             ),
             onTap: () {
               // Go previous slide
-              _pageController.animateToPage(_getNextIndex(),
+              _pageController.animateToPage(_viewmodel.onPrivious(),
                   duration: const Duration(
                     milliseconds: DurationConstant.d300,
                   ),
@@ -141,26 +147,6 @@ class _OnboardingViewState extends State<OnboardingView> {
     );
   }
 
-  int _getPreviousIndex() {
-    int previousIndex = _currentIndex - 1;
-    if (previousIndex == -1) {
-      _currentIndex = _list.length - 1; // infinite loop to the length of the slider list
-    } else {
-      _currentIndex = previousIndex;
-    }
-    return _currentIndex;
-  }
-
-  int _getNextIndex() {
-    int nextIndex = _currentIndex + 1;
-    if (nextIndex >= _list.length) {
-      _currentIndex = 0; // infinite loop to the first inside the slider
-    } else {
-      _currentIndex = nextIndex;
-    }
-    return _currentIndex;
-  }
-
   Widget _getProperCircle(int index) {
     if (index == _currentIndex) {
       return SvgPicture.asset(ImagesAsset.hollowCirlceIc); // Selected slider
@@ -168,11 +154,17 @@ class _OnboardingViewState extends State<OnboardingView> {
       return SvgPicture.asset(ImagesAsset.solidCircleIc);
     }
   }
+
+  @override
+  void dispose() {
+    _viewmodel.dispose();
+    super.dispose();
+  }
 }
 
 class OnboardingPage extends StatelessWidget {
   final SliderObject _sliderObject;
-  OnboardingPage(this._sliderObject, {super.key});
+  const OnboardingPage(this._sliderObject, {super.key});
 
   @override
   Widget build(BuildContext context) {

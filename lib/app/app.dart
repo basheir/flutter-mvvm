@@ -12,7 +12,7 @@ class MyApp extends StatefulWidget {
  const MyApp._internal(); // private named constructor
   final int appState = 0;
   static final MyApp instance =
-      MyApp._internal(); // single instance -- singleton
+      const MyApp._internal(); // single instance -- singleton
 
   factory MyApp() => instance; // factory for the class instance
 
