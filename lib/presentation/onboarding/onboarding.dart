@@ -9,8 +9,7 @@ import 'package:mvvm_project/presentation/resources/values_manager.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class OnboardingView extends StatefulWidget {
-  final SliderObject _sliderObject;
-  const OnboardingView(this._sliderObject, {super.key});
+  
 
   @override
   State<OnboardingView> createState() => _OnboardingViewState();
@@ -81,7 +80,7 @@ class _OnboardingViewState extends State<OnboardingView> {
               ),
 
               // Add layout for indicator and arrows
-              _getButtomSheetWidget(sliderViewObject as SliderObject),
+              _getButtomSheetWidget(sliderViewObject),
             ],
           ),
         ),
@@ -89,7 +88,7 @@ class _OnboardingViewState extends State<OnboardingView> {
     }
   }
 
-  Widget _getButtomSheetWidget(SliderObject sliderObject) {
+  Widget _getButtomSheetWidget(sliderViewObject sliderViewObject) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -116,10 +115,10 @@ class _OnboardingViewState extends State<OnboardingView> {
         // Circles indicator
         Row(
           children: [
-            for (int i = 0; i < _list.length; i++)
+            for (int i = 0; i < sliderViewObject.numOfSlides; i++)
               Padding(
                 padding: const EdgeInsets.all(AppPadding.p12),
-                child: _getProperCircle(i),
+                child: _getProperCircle(i, sliderViewObject.currentIndex),
               ),
           ],
         ),
@@ -135,7 +134,7 @@ class _OnboardingViewState extends State<OnboardingView> {
             ),
             onTap: () {
               // Go next slide
-              _pageController.animateToPage(_getPreviousIndex(),
+              _pageController.animateToPage(_viewmodel.goNext(),
                   duration: const Duration(
                     milliseconds: DurationConstant.d300,
                   ),
@@ -147,7 +146,7 @@ class _OnboardingViewState extends State<OnboardingView> {
     );
   }
 
-  Widget _getProperCircle(int index) {
+  Widget _getProperCircle(int index, int _currentIndex) {
     if (index == _currentIndex) {
       return SvgPicture.asset(ImagesAsset.hollowCirlceIc); // Selected slider
     } else {
@@ -163,8 +162,10 @@ class _OnboardingViewState extends State<OnboardingView> {
 }
 
 class OnboardingPage extends StatelessWidget {
-  final SliderObject _sliderObject;
-  const OnboardingPage(this._sliderObject, {super.key});
+
+final SliderObject _sliderObject;
+
+OnboardingPage(this._sliderObject, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
