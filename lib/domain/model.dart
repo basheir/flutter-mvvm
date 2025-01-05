@@ -16,12 +16,12 @@ class Contact{
 }
 
 
-class Customer{
-  int? id;
-  String? name;
-  String? numOfNotifications;
+class Customer {
+  String id;
+  String name;
+  int numOfNotifications;
 
-  Customer({this.id, this.name, this.numOfNotifications});
+  Customer(this.id, this.name, this.numOfNotifications);
 }
 
 
