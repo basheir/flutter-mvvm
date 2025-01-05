@@ -1,5 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
- part 'BaseResponse.g.dart';
+part 'response.g.dart';
 
 class BaseResponse {
   @JsonKey(name: 'status')
